@@ -10,6 +10,8 @@
 
 このシステムは、開発の各工程（設計・開発・テスト）に応じて必要なドキュメントを自動的に取得し、AIの推論に活用します。重要な点として、**ドキュメントの内容はユーザーに直接表示せず、AIの内部処理でのみ使用**することで、適切なガイダンスを提供しながらユーザーエクスペリエンスを保護します。
 
+**リモートアクセス対応**: 1台のPC上でサーバーを起動し、チーム内の他のメンバーがMCPクライアント経由でドキュメントにアクセスできます。ドキュメントの配置場所は`config.json`で柔軟に設定可能で、個人のPC環境に合わせてカスタマイズできます。
+
 ## 🚀 クイックスタート
 
 ### 前提条件
@@ -30,6 +32,106 @@ npm run dev
 ```
 http://localhost:8080/mcp
 ```
+
+## 👥 使用方法
+
+### 🖥️ サーバー起動者（管理者）
+
+#### 1. 環境準備
+```bash
+# リポジトリをクローン
+git clone <repository-url>
+cd document-remote-mcp
+
+# 依存関係をインストール
+npm install
+```
+
+#### 2. ドキュメント配置
+- `development-guidelines/`ディレクトリにルール文書を配置
+- 必要に応じて`config.json`でドキュメントパスを設定
+```json
+{
+  "documentBasePath": "/path/to/your/documents"
+}
+```
+
+#### 3. サーバー起動
+```bash
+# 開発モード（推奨）
+npm run dev
+
+# または本番モード
+npm run build
+npm start
+```
+
+#### 4. アクセス情報の共有
+利用者に以下の情報を伝える：
+- **IPアドレス**: サーバーのIPアドレス（例：`192.168.1.100`）
+- **ポート**: `8080`（デフォルト）
+- **MCPエンドポイント**: `http://<IP>:8080/mcp`
+
+### 👤 利用者（クライアント側）
+
+#### 1. MCPエンドポイントの設定
+管理者から受け取った情報をMCPクライアントに設定：
+
+**Claude Desktop の場合:**
+`~/.claude_desktop_config.json`に追加：
+```json
+{
+  "mcpServers": {
+    "document-remote": {
+      "command": "node",
+      "args": ["-e", "console.log('MCP_TRANSPORT_HTTP'); process.exit(0);"],
+      "env": {
+        "MCP_TRANSPORT_HTTP": "http://<SERVER_IP>:8080/mcp"
+      }
+    }
+  }
+}
+```
+
+**その他のMCPクライアント:**
+- エンドポイントURL: `http://<SERVER_IP>:8080/mcp`
+- トランスポート: HTTP Stream
+
+#### 2. 利用可能なツール
+接続後、以下のツールが利用可能：
+
+- `get_phase_documents` - 工程別ドキュメント取得
+- `get_document_content` - 特定ドキュメント取得
+- `list_available_phases` - 工程一覧取得
+
+#### 3. 使用例
+```bash
+# 設計工程のドキュメントを取得
+get_phase_documents(phase: "design")
+
+# 開発工程のドキュメントを取得  
+get_phase_documents(phase: "development")
+
+# 特定ファイルの内容を取得
+get_document_content(phase: "development", fileName: "dev_rules.md")
+```
+
+### 🌐 ネットワーク設定
+
+#### ファイアウォール設定
+サーバー側で8080ポートを開放：
+```bash
+# Ubuntu/Debian
+sudo ufw allow 8080
+
+# CentOS/RHEL
+sudo firewall-cmd --permanent --add-port=8080/tcp
+sudo firewall-cmd --reload
+```
+
+#### プライベートネットワーク利用推奨
+- 社内LAN等のプライベートネットワークでの利用を推奨
+- インターネット公開は避ける（セキュリティ上の理由）
 
 ## 📋 提供機能
 
