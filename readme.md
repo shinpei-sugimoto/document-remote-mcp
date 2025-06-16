@@ -31,6 +31,42 @@ npm run dev
 http://localhost:8080/mcp
 ```
 
+## 🐳 Docker での使用方法
+
+### Docker Compose を使用した簡単起動
+
+#### 前提条件
+- Docker
+- Docker Compose
+
+#### 基本的な起動手順
+
+```bash
+# 1. リポジトリをクローン
+git clone <repository-url>
+cd document-remote-mcp
+
+# 2. ドキュメントを development-guidelines/ に配置
+
+# 3. Docker Compose で起動
+docker-compose up -d
+
+# 4. 動作確認
+curl http://localhost:8080/mcp
+```
+
+#### アクセス方法
+- **ローカル**: `http://localhost:8080/mcp`
+- **リモート**: `http://<HOST_IP>:8080/mcp`
+
+### Docker運用の利点
+- 環境の一貫性（Node.js、依存関係が自動管理）
+- ワンコマンドでの起動・停止
+- セキュアな分離環境
+- 簡単な配布とインストール
+
+詳細な Docker 運用方法は [DOCKER.md](./DOCKER.md) を参照してください。
+
 ## 📋 提供機能
 
 ### MCPツール

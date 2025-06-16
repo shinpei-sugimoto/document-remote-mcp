@@ -1,0 +1,55 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Built files
+dist/
+
+# Git
+.git/
+.gitignore
+
+# Tests
+tests/
+coverage/
+*.test.ts
+*.spec.ts
+
+# Development files
+.env.local
+.env.development
+.env.test
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Documentation (will be mounted as volume)
+readme.md
+CLAUDE.md
+
+# CI/CD
+.github/
+
+# Development scripts
+*.sh

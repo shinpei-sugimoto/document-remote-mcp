@@ -8,7 +8,9 @@ const server = new FastMCP({
     version: "1.0.0",
 });
 
-const documentService = new DocumentRetrievalService('.');
+// Docker環境では /app/documents を、それ以外では . を使用
+const documentsPath = process.env.NODE_ENV === 'production' ? '/app/documents' : '.';
+const documentService = new DocumentRetrievalService(documentsPath);
 
 server.addTool({
     name: "get_phase_documents",
