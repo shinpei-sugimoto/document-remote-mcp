@@ -10,6 +10,8 @@
 
 このシステムは、開発の各工程（設計・開発・テスト）に応じて必要なドキュメントを自動的に取得し、AIの推論に活用します。重要な点として、**ドキュメントの内容はユーザーに直接表示せず、AIの内部処理でのみ使用**することで、適切なガイダンスを提供しながらユーザーエクスペリエンスを保護します。
 
+ドキュメントの配置場所は`config.json`で柔軟に設定可能で、個人のPC環境に合わせてカスタマイズできます。
+
 ## 🚀 クイックスタート
 
 ### 前提条件
@@ -77,6 +79,56 @@ development-guidelines/
     └── unit_test_rules.md
 ```
 
+## ⚙️ 設定
+
+### 設定ファイル（config.json）
+
+ドキュメントの配置場所を`config.json`で設定できます：
+
+```json
+{
+  "documentBasePath": "."
+}
+```
+
+#### 設定項目
+
+| 項目 | 説明 | デフォルト値 |
+|------|------|-------------|
+| `documentBasePath` | `development-guidelines`ディレクトリが配置されているベースパス | `"."` |
+
+#### 設定例
+
+**デフォルト設定（カレントディレクトリ）:**
+```json
+{
+  "documentBasePath": "."
+}
+```
+→ `./development-guidelines/` を参照
+
+**カスタムパス:**
+```json
+{
+  "documentBasePath": "/home/user/documents"
+}
+```
+→ `/home/user/documents/development-guidelines/` を参照
+
+**相対パス:**
+```json
+{
+  "documentBasePath": "../shared-docs"
+}
+```
+→ `../shared-docs/development-guidelines/` を参照
+
+### 設定ファイルの配置
+
+1. プロジェクトルートに`config.json`を配置
+2. 設定ファイルが存在しない場合、デフォルト設定（カレントディレクトリ）を使用
+3. 設定ファイルの読み込みに失敗した場合もデフォルト設定を使用
+
 ## 🛠️ 開発
 
 ### 利用可能なコマンド
@@ -124,3 +176,4 @@ npm run test:coverage
 - 新しいドキュメントは適切なディレクトリ（`design-rules/`, `development-rules/`, `test-rules/`）に配置
 - サポートされるファイル形式: `.md`, `.txt`, `.rst`, `.adoc`, `.tex`
 - `rulus.md`は全工程で自動的に含まれる最重要ルール
+- ドキュメントの配置場所は`config.json`の`documentBasePath`で設定可能

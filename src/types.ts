@@ -1,5 +1,9 @@
 export type ProcessPhase = "design" | "development" | "test";
 
+export interface ServerConfig {
+  documentBasePath: string;
+}
+
 export interface DocumentDirectory {
   name: string;
   path: string;
@@ -27,25 +31,25 @@ export const PROCESS_PHASES: Record<ProcessPhase, ProcessPhaseConfig> = {
   design: {
     phase: "design",
     targetDirectories: [
-      { name: "general-rules", path: "development-guidelines" },
-      { name: "design-rules", path: "development-guidelines/design-rules" }
+      { name: "general-rules", path: "" },
+      { name: "design-rules", path: "design-rules" }
     ]
   },
   development: {
     phase: "development", 
     targetDirectories: [
-      { name: "general-rules", path: "development-guidelines" },
-      { name: "design-rules", path: "development-guidelines/design-rules" },
-      { name: "development-rules", path: "development-guidelines/development-rules" }
+      { name: "general-rules", path: "" },
+      { name: "design-rules", path: "design-rules" },
+      { name: "development-rules", path: "development-rules" }
     ]
   },
   test: {
     phase: "test",
     targetDirectories: [
-      { name: "general-rules", path: "development-guidelines" },
-      { name: "design-rules", path: "development-guidelines/design-rules" },
-      { name: "development-rules", path: "development-guidelines/development-rules" },
-      { name: "test-rules", path: "development-guidelines/test-rules" }
+      { name: "general-rules", path: "" },
+      { name: "design-rules", path: "design-rules" },
+      { name: "development-rules", path: "development-rules" },
+      { name: "test-rules", path: "test-rules" }
     ]
   }
 };

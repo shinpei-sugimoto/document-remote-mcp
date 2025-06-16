@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 import { DocumentRetrievalService } from '../src/documentRetrieval';
 import { ProcessPhase } from '../src/types';
+import { ConfigService } from '../src/configService';
 
 describe('DocumentRetrievalService', () => {
   let service: DocumentRetrievalService;
@@ -9,7 +10,16 @@ describe('DocumentRetrievalService', () => {
 
   beforeEach(async () => {
     testDocumentPath = path.join(__dirname, 'test-documents');
-    service = new DocumentRetrievalService(testDocumentPath);
+    
+    // テスト用の設定をConfigServiceに注入
+    const configService = ConfigService.getInstance();
+    // プライベートプロパティのconfigを直接設定（テスト用）
+    (configService as any).config = {
+      documentBasePath: testDocumentPath
+    };
+    
+    // DocumentRetrievalServiceは明示的にテストパスを指定
+    service = new DocumentRetrievalService(path.join(testDocumentPath, 'development-guidelines'));
     
     // テスト用ディレクトリとファイルを作成
     await setupTestDocuments();
@@ -18,6 +28,10 @@ describe('DocumentRetrievalService', () => {
   afterEach(async () => {
     // テスト用ファイルを削除
     await cleanupTestDocuments();
+    
+    // ConfigServiceの状態をリセット
+    const configService = ConfigService.getInstance();
+    (configService as any).config = null;
   });
 
   async function setupTestDocuments() {
