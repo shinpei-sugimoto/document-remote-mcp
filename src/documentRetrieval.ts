@@ -6,12 +6,21 @@ import {
   DocumentRetrievalResult, 
   PROCESS_PHASES 
 } from './types.js';
+import { ConfigService } from './configService.js';
 
 export class DocumentRetrievalService {
   private baseDocumentPath: string;
+  private configService: ConfigService;
 
-  constructor(baseDocumentPath: string = './documents') {
-    this.baseDocumentPath = baseDocumentPath;
+  constructor(baseDocumentPath?: string) {
+    this.configService = ConfigService.getInstance();
+    
+    // baseDocumentPathが指定されている場合は優先、なければ設定から取得
+    if (baseDocumentPath) {
+      this.baseDocumentPath = baseDocumentPath;
+    } else {
+      this.baseDocumentPath = this.configService.getFullDocumentPath();
+    }
   }
 
   async getDocumentsByPhase(phase: ProcessPhase): Promise<DocumentRetrievalResult> {
@@ -23,7 +32,10 @@ export class DocumentRetrievalService {
     const documents: DocumentFile[] = [];
 
     for (const directory of phaseConfig.targetDirectories) {
-      const directoryPath = path.join(this.baseDocumentPath, directory.path);
+      // 空のパスの場合はベースパスをそのまま使用、そうでなければ結合
+      const directoryPath = directory.path 
+        ? path.join(this.baseDocumentPath, directory.path)
+        : this.baseDocumentPath;
       
       try {
         const filesInDirectory = await this.getDocumentsFromDirectory(

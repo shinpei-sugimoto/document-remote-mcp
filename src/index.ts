@@ -2,13 +2,18 @@ import { FastMCP } from "fastmcp";
 import { z } from "zod";
 import { DocumentRetrievalService } from "./documentRetrieval.js";
 import { ProcessPhase } from "./types.js";
+import { ConfigService } from "./configService.js";
+
+// 設定を読み込み
+const configService = ConfigService.getInstance();
+await configService.loadConfig();
 
 const server = new FastMCP({
     name: "Document Remote MCP Server",
     version: "1.0.0",
 });
 
-const documentService = new DocumentRetrievalService('.');
+const documentService = new DocumentRetrievalService();
 
 server.addTool({
     name: "get_phase_documents",
