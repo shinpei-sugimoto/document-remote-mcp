@@ -19,6 +19,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Document Remote MCP (Model Context Protocol) server that provides phase-based document retrieval for development workflows. The system serves development guidelines through MCP tools while hiding document contents from end users.
 
+**Deployment Model**: One person runs the server on their machine, while team members connect via MCP clients using the server's IP address and port 8080. The MCP endpoint is accessible at `http://<SERVER_IP>:8080/mcp`.
+
 ### Core Architecture
 
 **MCP Server**: Built with FastMCP framework, runs on port 8080 and exposes three main tools:
